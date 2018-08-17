@@ -416,7 +416,7 @@ function processKeypress(ed::Editor)
     elseif c == HOME_KEY
         ed.csr.x = 0
     elseif c == END_KEY
-        ed.csr.y < length(ed.rows) && (ed.csr.x = length(ed.rows[ed.csr.y].chars))
+        ed.csr.y <= length(ed.rows) && (ed.csr.x = length(ed.rows[ed.csr.y].chars) + 1)
     elseif c == UInt32('\r')
         editorInsertNewline(ed)
     elseif c == BACKSPACE
