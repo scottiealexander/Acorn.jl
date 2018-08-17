@@ -270,7 +270,12 @@ function drawRows(ed::Editor, buf::IOBuffer)
         else
             len = length(ed.rows[filerow].render) - ed.coloff
             len = clamp(len, 0, ed.width)
-            write(buf, ed.rows[filerow].render[1+ed.coloff : ed.coloff + len])
+            #write(buf, ed.rows[filerow].render[1+ed.coloff : ed.coloff + len])
+            get_color = get_color_function(ed.filename)
+            printrow(buf,
+                ed.rows[filerow].render[1+ed.coloff : ed.coloff + len],
+                get_color
+            )
         end
     end
     # Write a newline to prepare for status bar
