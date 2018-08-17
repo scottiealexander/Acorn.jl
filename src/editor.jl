@@ -24,22 +24,22 @@ end
 mutable struct Editor
     "row view offset"
     rowoff::Int
-   
+
     "column view offset"
     coloff::Int
 
     "terminal width"
     width::Int
-    
+
     "terminal height"
     height::Int
-    
+
     "currently edited file"
     filename::String
-    
+
     "current status message"
     statusmsg::String
-    
+
     "time reaining to display status"
     status_time::Float64
 
@@ -77,7 +77,7 @@ function Editor()
     csr = Cursor(1,1,1)
     rows = Rows()
     term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static is_windows() ? "" : "dumb"), STDIN, STDOUT, STDERR)
-    
+
     params = Dict{Symbol, Dict{Symbol, Any}}()
 
     Editor(rowoff, coloff, width, height, filename,
