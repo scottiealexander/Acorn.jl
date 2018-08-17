@@ -36,11 +36,15 @@ function get_color_pzl(t::TokenStream, x::AbstractString)
     end
 end
 
+get_color_default(t::TokenStream, x::AbstractString) =  :white
+
 function get_color_function(pth::String)
     ext = splitext(pth)[2]
     if ext == ".pzl"
         return get_color_pzl
-    else
+    elseif ext == ".jl"
         return get_color_jl
+    else
+        return get_color_default
     end
 end
