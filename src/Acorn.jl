@@ -6,6 +6,10 @@ include("terminal.jl")
 include("EditorConfig.jl")
 using .EditorConfig
 
+include("SimpleParser.jl")
+using .SimpleParser
+include("highlights.jl")
+
 include("row.jl")
 include("cmds/Command.jl")
 include("editor.jl")
