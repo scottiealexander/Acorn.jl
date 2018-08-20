@@ -1,5 +1,7 @@
 module Acorn
 
+using Printf, REPL
+
 include("terminal.jl")
 
 # Configuration submodule
@@ -33,7 +35,6 @@ function acorn(filename::String; rel::Bool=true)
     setStatusMessage(ed, "HELP: ctrl-p: command mode | ctrl-q: quit | ctrl-s: save")
 
     REPL.Terminals.raw!(ed.term, true)
-
 
     try
         while !ed.quit
