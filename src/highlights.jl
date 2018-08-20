@@ -29,14 +29,14 @@ function get_color_pzl(t::TokenStream, x::AbstractString)
         return :yellow
     elseif x == "x"
         return :light_black
-    elseif length(x) == 1 && ismatch(r"[neswNESW]", x)
+    elseif length(x) == 1 && occursin(r"[neswNESW]", x)
         return :light_yellow
     else
         return :white
     end
 end
 
-get_color_default(t::TokenStream, x::AbstractString) =  :white
+get_color_default(t::TokenStream, x::AbstractString) =  :default
 
 function get_color_function(pth::String)
     ext = splitext(pth)[2]
