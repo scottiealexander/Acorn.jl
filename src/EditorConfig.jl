@@ -5,7 +5,7 @@ module EditorConfig
 ## Parameter ##
 ###############
 
-type Parameter{T}
+mutable struct Parameter{T}
     value::T
     validate::Union{Function, Void}
     desc::String # Used when calling help <param name>
