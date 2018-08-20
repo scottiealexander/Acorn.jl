@@ -40,6 +40,7 @@ function acorn(filename::String; rel::Bool=true)
         while !ed.quit
             refreshScreen(ed)
             processKeypress(ed)
+            yield()
         end
     catch ex
         editorQuit(ed, force=true)
