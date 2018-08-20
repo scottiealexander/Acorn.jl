@@ -2,6 +2,7 @@ import Base.==
 
 @enum(Key,
     BACKSPACE = (@static Sys.iswindows() ? 8 : 127),
+    ESCAPE = 27,
     ARROW_LEFT = 1000,
     ARROW_RIGHT,
     ARROW_UP,
