@@ -7,11 +7,13 @@ module EditorConfig
 
 mutable struct Parameter{T}
     value::T
-    validate::Union{Function, Nothing}
+    validate::Function
     desc::String # Used when calling help <param name>
 end
 
-validate(p::Parameter) = p.validate == Nothing ? true : p.validate(p.value)
+noop(x::Any) = true
+
+validate(p::Parameter) = p.validate(p.value)
 
 function set(p::Parameter, x)
     old_val = p.value
@@ -95,8 +97,8 @@ isKeyBound(c::Char) = (UInt32(c) & 0x1f) in keys(KEY_BINDINGS)
 ########################
 
 CONFIG[:tab_stop] = Parameter{Int}(4, n-> n > 0 && n <= 16, "visual size of a tab in number of spaces")
-CONFIG[:expandtab] = Parameter{Bool}(false, Nothing, "if true, use spaces instead of tabs when pressing <tab>")
-CONFIG[:status_fullpath] = Parameter{Bool}(false, Nothing, "show full path to current file")
+CONFIG[:expandtab] = Parameter{Bool}(false, noop, "if true, use spaces instead of tabs when pressing <tab>")
+CONFIG[:status_fullpath] = Parameter{Bool}(false, noop, "show full path to current file")
 
 ##########################
 ## DEFAULT KEY BINDINGS ##
