@@ -5,9 +5,9 @@ function get_color_jl(t::TokenStream, x::AbstractString)
         return :light_black
     elseif peek(t) == "("
         return :light_cyan
-    elseif ismatch(r"^[\-\+]?\d+$|^[\-\+]?\d*\.\d+$|^true$|^false$", x)
+    elseif occursin(r"^[\-\+]?\d+$|^[\-\+]?\d*\.\d+$|^true$|^false$", x)
         return :magenta
-    elseif ismatch(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$", x)
+    elseif occursin(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$|^module$|^using$|^import$", x)
         return :red
     else
         return :white
