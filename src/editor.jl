@@ -1,7 +1,7 @@
 # """ Clear the screen, print an error message, and kill the program """
 # function die(msg)
-#     write(STDOUT, "\x1b[2J")
-#     write(STDOUT, "\x1b[H")
+#     write(stdout, "\x1b[2J")
+#     write(stdout, "\x1b[H")
 #     error(msg)
 # end
 
@@ -76,7 +76,7 @@ function Editor()
 
     csr = Cursor(1,1,1)
     rows = Rows()
-    term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), STDIN, STDOUT, STDERR)
+    term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
 
     params = Dict{Symbol, Dict{Symbol, Any}}()
 
@@ -349,7 +349,7 @@ function refreshScreen(ed::Editor)
 
     write(buf, "\x1b[?25h") # ?25h: Show cursor
 
-    write(STDOUT, String(take!(buf)))
+    write(stdout, String(take!(buf)))
 end
 
 function editorPrompt(ed::Editor, prompt::String;
@@ -363,7 +363,7 @@ function editorPrompt(ed::Editor, prompt::String;
 
         if showcursor
             # Position the cursor at the end of the line
-            @printf(STDOUT, "\x1b[%d;%dH", 999, length(statusmsg)+1)
+            @printf(stdout, "\x1b[%d;%dH", 999, length(statusmsg)+1)
         end
 
         c = Char(readKey())
@@ -513,8 +513,8 @@ function editorQuit(ed::Editor; force::Bool=false)
         setStatusMessage(ed,
             "File has unsaved changes. Save changes or use <ctrl-p>'quit !' to quit anyway.")
     else
-        write(STDOUT, "\x1b[2J")
-        write(STDOUT, "\x1b[H")
+        write(stdout, "\x1b[2J")
+        write(stdout, "\x1b[H")
         ed.quit = true
         !isinteractive() && exit(0)
     end
