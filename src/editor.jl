@@ -56,7 +56,7 @@ mutable struct Editor
     rows::Rows
 
     "terminal hosting this editor"
-    term::Base.Terminals.TTYTerminal
+    term::REPL.Terminals.TTYTerminal
 
     "used by commands to store variables"
     params::Dict{Symbol, Dict{Symbol, Any}}
@@ -76,7 +76,7 @@ function Editor()
 
     csr = Cursor(1,1,1)
     rows = Rows()
-    term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
+    term = REPL.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
 
     params = Dict{Symbol, Dict{Symbol, Any}}()
 
@@ -329,9 +329,9 @@ end
 function refreshScreen(ed::Editor)
 
     # Update terminal size
-    ed.height = Base.Terminals.height(ed.term) - 2 # status + msg bar = 2
+    ed.height = REPL.Terminals.height(ed.term) - 2 # status + msg bar = 2
 	@static Sys.iswindows() ? (ed.height -= 1) : ed.height
-    ed.width = Base.Terminals.width(ed.term)
+    ed.width = REPL.Terminals.width(ed.term)
 
     scroll(ed)
 

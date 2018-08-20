@@ -32,7 +32,7 @@ function acorn(filename::String; rel::Bool=true)
 
     setStatusMessage(ed, "HELP: ctrl-p: command mode | ctrl-q: quit | ctrl-s: save")
 
-    Base.Terminals.raw!(ed.term, true)
+    REPL.Terminals.raw!(ed.term, true)
 
 
     try
@@ -46,7 +46,7 @@ function acorn(filename::String; rel::Bool=true)
     end
 
 
-    Base.Terminals.raw!(ed.term, false)
+    REPL.Terminals.raw!(ed.term, false)
 
     return nothing
 end

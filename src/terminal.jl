@@ -29,11 +29,11 @@ ctrl_key(c::Char)::UInt32 = UInt32(c) & 0x1f
 
 # For debugging
 function printNextKey()
-	term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
-	Base.Terminals.raw!(term, true)
+	term = REPL.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
+	REPL.Terminals.raw!(term, true)
 	c = readNextChar()
 	print("Code: $(UInt32(c)), Char: $(Char(c))")
-	Base.Terminals.raw!(term, true)
+	REPL.Terminals.raw!(term, true)
 	return nothing
 end
 
