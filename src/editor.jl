@@ -76,7 +76,7 @@ function Editor()
 
     csr = Cursor(1,1,1)
     rows = Rows()
-    term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static is_windows() ? "" : "dumb"), STDIN, STDOUT, STDERR)
+    term = Base.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), STDIN, STDOUT, STDERR)
 
     params = Dict{Symbol, Dict{Symbol, Any}}()
 
@@ -330,7 +330,7 @@ function refreshScreen(ed::Editor)
 
     # Update terminal size
     ed.height = Base.Terminals.height(ed.term) - 2 # status + msg bar = 2
-	@static is_windows() ? (ed.height -= 1) : ed.height
+	@static Sys.iswindows() ? (ed.height -= 1) : ed.height
     ed.width = Base.Terminals.width(ed.term)
 
     scroll(ed)
