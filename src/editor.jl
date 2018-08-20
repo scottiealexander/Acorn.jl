@@ -120,7 +120,7 @@ function editorOpen(ed::Editor, filename::String)
             ed.csr.y = 1
             ed.dirty = false
         end
-    catch Exception e
+    catch Exception
         setStatusMessage(ed, "Cannot open file $filename")
     end
 end
