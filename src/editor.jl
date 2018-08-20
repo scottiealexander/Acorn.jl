@@ -424,11 +424,15 @@ function processKeypress(ed::Editor)
     elseif c == DEL_KEY
         moveCursor(ed, ARROW_RIGHT)
         editorDelChar(ed)
-    elseif c == ctrl_key('l')
-        # Refresh screen
-        return
-    elseif iscntrl(Char(c)) && isKeyBound(Char(c))
-        runCommand(ed, getKeyBinding(Char(c)))
+    # elseif c == ctrl_key('l')
+    #     # Refresh screen
+    #     return
+    elseif iscntrl(Char(c)) #&& isKeyBound(Char(c))
+        if isKeyBound(Char(c))
+            runCommand(ed, getKeyBinding(Char(c)))
+        else
+            setStatusMessage(ed, "Key is not bound...")
+        end
     elseif c == UInt32('\t')
         editorInsertTab(ed)
     elseif !iscntrl(Char(c)) && c < 1000
