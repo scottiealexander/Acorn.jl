@@ -39,7 +39,7 @@ end
 
 readNextChar() = Char(read(stdin,1)[1])
 
-function readKey() ::UInt32
+function readKey()
     c = readNextChar()
 
     # Escape characters
