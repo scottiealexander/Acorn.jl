@@ -533,7 +533,7 @@ function runCommand(ed::Editor)
     runCommand(ed, strip(cmd))
 end
 
-function runCommand(ed::Editor, command_str::String)
+function runCommand(ed::Editor, command_str::AbstractString)
     cmd_arr = split(command_str, ' ', limit=2)
 
     # Get the command
@@ -565,6 +565,6 @@ function runCommand(ed::Editor, command_str::String)
     end
 end
 
-function runCommand(c::Command, ed::Editor, args::String)
+function runCommand(c::Command, ed::Editor, args::AbstractString)
     c.cmd(ed, args)
 end
