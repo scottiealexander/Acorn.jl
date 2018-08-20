@@ -69,14 +69,15 @@ function findnext(t::TokenStream, chr::Char, start::Integer)
         end
         k += 1
     end
-    return k
+    return k > length(t.src) ? length(t.src) : k
 end
 
 function printrow(io::IO, x::AbstractString, colorfun::Function)
     ts = TokenStream(x)
+    iocolored = IOContext(io, :color => true)
     while !done(ts)
         tkn = next(ts)[1]
-        print_with_color(colorfun(ts, tkn), io, tkn)
+        printstyled(iocolored, tkn, color=colorfun(ts, tkn))
     end
     return io
 end
