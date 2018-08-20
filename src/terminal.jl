@@ -19,7 +19,8 @@ import Base.==
     C_ARROW_UP,
     C_ARROW_DOWN,
     C_ARROW_LEFT,
-    C_ARROW_RIGHT)
+    C_ARROW_RIGHT
+    )
 
 ==(c::UInt32, k::Key) = c == UInt32(k)
 ==(k::Key, c::UInt32) = c == UInt32(k)
@@ -45,94 +46,103 @@ function readKey()
 
     # Escape characters
     if c == '\x1b'
-        stdin.buffer.size < 3 && return '\x1b'
+        if stdin.buffer.size < 3
+            ret = ESCAPE
+        end
         esc_a = readNextChar()
         esc_b = readNextChar()
 
         if esc_a == '['
             if esc_b >= '0' && esc_b <= '9'
-                stdin.buffer.size < 4 && return '\x1b'
+                if stdin.buffer.size < 4
+                    ret = ESCAPE
+                end
                 esc_c = readNextChar()
 
                 if esc_c == '~'
                     if esc_b == '1'
-                        return HOME_KEY
+                        ret = HOME_KEY
                     elseif esc_b == '4'
-                        return END_KEY
+                        ret = END_KEY
                     elseif esc_b == '3'
-                        return DEL_KEY
+                        ret = DEL_KEY
                     elseif esc_b == '5'
-                        return PAGE_UP
+                        ret = PAGE_UP
                     elseif esc_b == '6'
-                        return PAGE_DOWN
+                        ret = PAGE_DOWN
                     elseif esc_b == '7'
-                        return HOME_KEY
+                        ret = HOME_KEY
                     elseif esc_b == '8'
-                        return END_KEY
+                        ret = END_KEY
                     else
-                        return '\x1b'
+                        ret = ESCAPE
                     end
                 elseif esc_c == ';'
-                    stdin.buffer.size < 6 && return '\x1b'
+                    if stdin.buffer.size < 6
+                        ret = ESCAPE
+                    end
+
                     esc_d = readNextChar()
                     esc_e = readNextChar()
 
                     if esc_d == '2'
                         # shift + arrorw
                         if esc_e == 'A'
-                            return S_ARROW_UP
+                            ret = S_ARROW_UP
                         elseif esc_e == 'B'
-                            return S_ARROW_DOWN
+                            ret = S_ARROW_DOWN
                         elseif esc_e == 'C'
-                            return S_ARROW_RIGHT
+                            ret = S_ARROW_RIGHT
                         elseif esc_e == 'D'
-                            return S_ARROW_LEFT
+                            ret = S_ARROW_LEFT
                         else
-                            return '\x1b'
+                            ret = ESCAPE
                         end
                     elseif esc_d == '5'
                         # Ctrl + arrow
                         if esc_e == 'A'
-                            return C_ARROW_UP
+                            ret = C_ARROW_UP
                         elseif esc_e == 'B'
-                            return C_ARROW_DOWN
+                            ret = C_ARROW_DOWN
                         elseif esc_e == 'C'
-                            return C_ARROW_RIGHT
+                            ret = C_ARROW_RIGHT
                         elseif esc_e == 'D'
-                            return C_ARROW_LEFT
+                            ret = C_ARROW_LEFT
                         else
-                            return '\x1b'
+                            ret = ESCAPE
                         end
                     end
                 end
             else
                 # Arrow keys
                 if esc_b == 'A'
-                    return ARROW_UP
+                    ret = ARROW_UP
                 elseif esc_b == 'B'
-                    return ARROW_DOWN
+                    ret = ARROW_DOWN
                 elseif esc_b == 'C'
-                    return ARROW_RIGHT
+                    ret = ARROW_RIGHT
                 elseif esc_b == 'D'
-                    return ARROW_LEFT
+                    ret = ARROW_LEFT
                 elseif esc_b == 'H'
-                    return HOME_KEY
+                    ret = HOME_KEY
                 elseif esc_b == 'F'
-                    return END_KEY
+                    ret = END_KEY
                 else
-                    return '\x1b'
+                    ret = ESCAPE
                 end
             end
         elseif esc_a == 'O'
             if esc_a == 'H'
-                return HOME_KEY
+                ret = HOME_KEY
             elseif esc_a == 'F'
-                return END_KEY
+                ret = END_KEY
             end
+        else
+            ret = ESCAPE
         end
 
-        return '\x1b'
+        return UInt32(ret)
     else
-        return c;
+        return UInt32(c)
     end
 end
