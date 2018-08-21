@@ -27,8 +27,8 @@ end
 
 function Base.collect(t::TokenStream)
     x = Vector{SubString{String}}()
-    while !done(t)
-        push!(x, next(t)[1])
+    while (next = iterate(t)) != nothing
+        push!(x, next[1])
     end
     return x
 end
@@ -40,7 +40,6 @@ Base.IteratorSize(t::TokenStream) = Base.SizeUnknown()
 Base.IteratorEltype(t::TokenStream) = Base.HasEltype()
 Base.eltype(t::TokenStream) = SubString{String}
 
-# function Base.next(t::TokenStream, state::Integer=1)
 function Base.iterate(t::TokenStream, state::Integer=1)
     t.ptr > length(t.src) && return nothing
 
