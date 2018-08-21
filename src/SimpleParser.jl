@@ -10,8 +10,18 @@ TokenStream(src::AbstractString) = TokenStream(src, 1)
 
 function peek(t::TokenStream)
     ptr = t.ptr
-    tkn, k = next(t, ptr)
+    next = iterate(t, ptr)
+    
+    if next == nothing
+        # return an empty substring
+        nel = length(t.src)
+        tkn = SubString{String}(t.src, nel, nel-1)
+    else
+        tkn = next[1]
+    end
+    
     t.ptr = ptr
+    
     return tkn
 end
 
@@ -23,11 +33,16 @@ function Base.collect(t::TokenStream)
     return x
 end
 
-Base.done(t::TokenStream, state::Integer=1) = t.ptr > length(t.src)
-Base.start(t::TokenStream) = 1
+# Base.done(t::TokenStream, state::Integer=1) = t.ptr > length(t.src)
+# Base.start(t::TokenStream) = 1
 
-function Base.next(t::TokenStream, state::Integer=1)
-    t.ptr > length(t.src) && return "", t.ptr
+Base.IteratorSize(t::TokenStream) = Base.SizeUnknown()
+Base.IteratorEltype(t::TokenStream) = Base.HasEltype()
+Base.eltype(t::TokenStream) = SubString{String}
+
+# function Base.next(t::TokenStream, state::Integer=1)
+function Base.iterate(t::TokenStream, state::Integer=1)
+    t.ptr > length(t.src) && return nothing
 
     x = t.src[t.ptr:t.ptr]
 
@@ -75,10 +90,16 @@ end
 function printrow(io::IO, x::AbstractString, colorfun::Function)
     ts = TokenStream(x)
     iocolored = IOContext(io, :color => true)
-    while !done(ts)
-        tkn = next(ts)[1]
+    
+    next = Base.iterate(ts)
+    while next != nothing
+        tkn, k = next
+        
         printstyled(iocolored, tkn, color=colorfun(ts, tkn))
+        
+        next = iterate(ts)
     end
+
     return io
 end
 
