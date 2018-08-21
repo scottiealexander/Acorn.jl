@@ -9,7 +9,7 @@ function get_color_jl(t::TokenStream, x::AbstractString)
         return :light_cyan
     elseif occursin(r"^[\-\+]?\d+$|^[\-\+]?\d*\.\d+$|^true$|^false$|^const$|^nothing$", x)
         return :magenta
-    elseif occursin(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$|^module$|^using$|^import$|^mutable$|^struct$", x)
+    elseif occursin(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$|^module$|^using$|^import$|^mutable$|^struct$|^export$", x)
         return :red
     else
         return :default
