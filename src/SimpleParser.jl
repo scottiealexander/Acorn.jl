@@ -55,8 +55,8 @@ function Base.iterate(t::TokenStream, state::Integer=1)
         if x == "#"
             k = findnext_nonmatch(t, r"[^\n\r]{1,2}", t.ptr)
         elseif x[1] == ':' && t.ptr < length(t.src)
-            if occursin(r"[A-Za-z_]", t.src[t.ptr+1:t.ptr+1])
-                k = findnext_nonmatch(t, r"\w", t.ptr)
+            if occursin(r"[A-Za-z_\:]", t.src[t.ptr+1:t.ptr+1])
+                k = findnext_nonmatch(t, r"\w", t.ptr+1)
             else
                 k = t.ptr
             end
