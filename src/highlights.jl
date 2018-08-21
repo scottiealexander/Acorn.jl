@@ -3,14 +3,16 @@ function get_color_jl(t::TokenStream, x::AbstractString)
         return :light_yellow
     elseif x[1] == '#'
         return :light_black
+    elseif length(x) > 1 && x[1] == ':'
+        return :light_cyan
     elseif peek(t) == "("
         return :light_cyan
-    elseif occursin(r"^[\-\+]?\d+$|^[\-\+]?\d*\.\d+$|^true$|^false$", x)
+    elseif occursin(r"^[\-\+]?\d+$|^[\-\+]?\d*\.\d+$|^true$|^false$|^const$|^nothing$", x)
         return :magenta
-    elseif occursin(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$|^module$|^using$|^import$", x)
+    elseif occursin(r"^if$|^elseif$|^else$|^end$|^for$|^while$|^function$|^continue$|^break$|^return$|^using$|^import$|^begin$|^do$|^let$|^module$|^using$|^import$|^mutable$|^struct$", x)
         return :red
     else
-        return :white
+        return :default
     end
 end
 
@@ -32,7 +34,7 @@ function get_color_pzl(t::TokenStream, x::AbstractString)
     elseif length(x) == 1 && occursin(r"[neswNESW]", x)
         return :light_yellow
     else
-        return :white
+        return :default
     end
 end
 
