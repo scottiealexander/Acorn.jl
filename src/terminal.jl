@@ -34,9 +34,14 @@ function printNextKey()
 	term = REPL.Terminals.TTYTerminal(get(ENV, "TERM", @static Sys.iswindows() ? "" : "dumb"), stdin, stdout, stderr)
 	REPL.Terminals.raw!(term, true)
 	c = readNextChar()
-	print("Code: $(UInt32(c)), Char: $(Char(c))")
+	print("Code: $(UInt32(c)), Char: $(Char(c))\n")
+	print("Buffer size: $(stdin.buffer.size)\n")
+	for k in 1:stdin.buffer.size
+	    c = readNextChar()
+	    print("Code: $(UInt32(c)), Char: $(Char(c))\n")
+	end
 	REPL.Terminals.raw!(term, true)
-	return nothing
+	return c
 end
 
 readNextChar() = Char(read(stdin,1)[1])
