@@ -97,7 +97,7 @@ isKeyBound(c::Char) = (UInt32(c) & 0x1f) in keys(KEY_BINDINGS)
 ########################
 
 CONFIG[:tab_stop] = Parameter{Int}(4, n-> n > 0 && n <= 16, "visual size of a tab in number of spaces")
-CONFIG[:expandtab] = Parameter{Bool}(false, noop, "if true, use spaces instead of tabs when pressing <tab>")
+CONFIG[:expandtab] = Parameter{Bool}(true, noop, "if true, use spaces instead of tabs when pressing <tab>")
 CONFIG[:status_fullpath] = Parameter{Bool}(false, noop, "show full path to current file")
 
 ##########################
