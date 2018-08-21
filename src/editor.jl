@@ -427,14 +427,14 @@ function processKeypress(ed::Editor)
     # elseif c == ctrl_key('l')
     #     # Refresh screen
     #     return
+    elseif c == UInt32('\t')
+        editorInsertTab(ed)
     elseif iscntrl(Char(c)) #&& isKeyBound(Char(c))
         if isKeyBound(Char(c))
             runCommand(ed, getKeyBinding(Char(c)))
         else
             setStatusMessage(ed, "Key is not bound...")
         end
-    elseif c == UInt32('\t')
-        editorInsertTab(ed)
     elseif !iscntrl(Char(c)) && c < 1000
         # Chars above 1000 are a ::Key, see src/terminal.jl
         editorInsertChar(ed, c)
