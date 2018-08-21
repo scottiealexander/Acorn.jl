@@ -51,16 +51,19 @@ function readKey()
 
     # Escape characters
     if c == '\x1b'
+        ret = ESCAPE
+        
         if stdin.buffer.size < 3
-            ret = ESCAPE
+            return UInt32(ESCAPE)
         end
+        
         esc_a = readNextChar()
         esc_b = readNextChar()
 
         if esc_a == '['
             if esc_b >= '0' && esc_b <= '9'
                 if stdin.buffer.size < 4
-                    ret = ESCAPE
+                    return UInt32(ESCAPE)
                 end
                 esc_c = readNextChar()
 
@@ -84,7 +87,7 @@ function readKey()
                     end
                 elseif esc_c == ';'
                     if stdin.buffer.size < 6
-                        ret = ESCAPE
+                        return UInt32(ESCAPE)
                     end
 
                     esc_d = readNextChar()
@@ -100,6 +103,15 @@ function readKey()
                             ret = S_ARROW_RIGHT
                         elseif esc_e == 'D'
                             ret = S_ARROW_LEFT
+                        else
+                            ret = ESCAPE
+                        end
+                    elseif esc_d == '3'
+                        # alt + arrow
+                        if esc_e == 'C'
+                            ret = END_KEY
+                        elseif esc_e == 'D'
+                            ret = HOME_KEY
                         else
                             ret = ESCAPE
                         end
