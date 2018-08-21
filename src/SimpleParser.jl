@@ -47,14 +47,23 @@ function Base.iterate(t::TokenStream, state::Integer=1)
 
     if occursin(r"\w|\.", x)
         k = findnext_nonmatch(t, r"\w|\.", t.ptr)
+        
     elseif x[1] == '\'' || x[1] == '"'
         k = findnext(t, x[1], t.ptr+1)
+        
     elseif occursin(r"[^\w\s]", x)
         if x == "#"
             k = findnext_nonmatch(t, r"[^\n\r]{1,2}", t.ptr)
+        elseif x[1] == ':' && t.ptr < length(t.src)
+            if occursin(r"[A-Za-z_]", t.src[t.ptr+1:t.ptr+1])
+                k = findnext_nonmatch(t, r"\w", t.ptr)
+            else
+                k = t.ptr
+            end
         else
             k = t.ptr
         end
+        
     elseif isspace(x[1])
         k = findnext_nonmatch(t, r"\s", t.ptr)
     end
@@ -65,6 +74,8 @@ function Base.iterate(t::TokenStream, state::Integer=1)
     return tkn, t.ptr
 end
 
+# TODO: findnext and findnext_nonmatch are using difference call conventions
+# this should be made consistent
 function findnext_nonmatch(t::TokenStream, r::Regex, start::Integer)
     k = start
     while k < length(t.src) && occursin(r, t.src[k+1:k+1])
